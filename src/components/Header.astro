@@ -1,0 +1,266 @@
+---
+import { Image } from "astro:assets";
+import Navigation from "./Navigation.astro";
+import { business, telHref, whatsappHref } from "../data/business";
+import logoMark from "../assets/brand/logo-mark.png";
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/#home" class="brand" aria-label={`${business.name} — home`}>
+      <span class="brand-mark">
+        <Image src={logoMark} alt="" width={44} height={44} loading="eager" fetchpriority="high" />
+      </span>
+      <span>
+        <span class="brand-name">{business.name}</span>
+        <span class="brand-sub">{business.tagline}</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <Navigation variant="desktop" />
+    </nav>
+
+    <div class="header-actions">
+      <a href={telHref()} class="header-phone">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        <span>{business.phoneDisplay}</span>
+      </a>
+
+      <a href="/#booking" class="btn btn-cta btn-sm header-book-btn">Book a Service</a>
+
+      <button
+        class="hamburger"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        id="hamburger-btn"
+      >
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <Navigation variant="mobile" />
+    <div class="mobile-nav-actions">
+      <a href="/#booking" class="btn btn-cta btn-block">Book a Service</a>
+      <a href={telHref()} class="btn btn-outline btn-block">Call Now</a>
+      <a href={whatsappHref()} class="btn btn-outline btn-block" target="_blank" rel="noopener">
+        WhatsApp Us
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--navy-900);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .header-inner {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .brand-mark {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .brand-name {
+    display: block;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 19px;
+    color: #fff;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
+  }
+
+  .brand-sub {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 1px;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+  }
+
+  .header-phone {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14.5px;
+  }
+
+  .header-phone svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .hamburger svg {
+    width: 22px;
+    height: 22px;
+    color: #fff;
+  }
+
+  .hamburger .icon-close {
+    display: none;
+  }
+
+  .hamburger[aria-expanded="true"] .icon-open {
+    display: none;
+  }
+
+  .hamburger[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  /* Mobile nav drawer */
+  .mobile-nav {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--navy-900);
+    z-index: 99;
+    padding: var(--sp-5);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.22s ease;
+  }
+
+  .mobile-nav.is-open {
+    transform: translateX(0);
+  }
+
+  .mobile-nav-actions {
+    margin-top: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  .header-book-btn {
+    /* Hidden only on the narrowest phones — the fixed mobile action bar
+       already provides a Book Service action there, and hiding it here
+       prevents the header from crowding at ~320–375px widths. */
+    display: none;
+  }
+
+  @media (min-width: 400px) {
+    .header-book-btn {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .main-nav {
+      display: block;
+    }
+    .header-phone {
+      display: inline-flex;
+    }
+    .hamburger {
+      display: none;
+    }
+    .mobile-nav {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Minimal client-side JS: only what the mobile drawer interaction needs.
+  const btn = document.getElementById("hamburger-btn");
+  const nav = document.getElementById("mobile-nav");
+
+  if (btn && nav) {
+    const closeNav = () => {
+      nav.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+    };
+
+    const openNav = () => {
+      nav.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    };
+
+    btn.addEventListener("click", () => {
+      const isOpen = nav.classList.contains("is-open");
+      isOpen ? closeNav() : openNav();
+    });
+
+    nav.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeNav));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeNav();
+    });
+  }
+</script>

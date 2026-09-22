@@ -1,0 +1,58 @@
+---
+import BenefitCard from "./BenefitCard.astro";
+import { benefits } from "../data/benefits";
+---
+
+<section class="benefits" id="why-choose-us" aria-labelledby="benefits-heading">
+  <div class="container">
+    <div class="benefits-intro">
+      <h2 id="benefits-heading">Why Choose SVPHome ARS?</h2>
+    </div>
+
+    <div class="benefits-grid">
+      {
+        benefits.map((benefit) => (
+          <BenefitCard icon={benefit.id} title={benefit.title} description={benefit.description} />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .benefits {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  .benefits-intro {
+    max-width: 60ch;
+    margin: 0 auto var(--sp-7);
+  }
+
+  .benefits-intro h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-5);
+  }
+
+  @media (min-width: 640px) {
+    .benefits-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .benefits-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .benefits-intro h2 {
+      font-size: 34px;
+    }
+  }
+</style>

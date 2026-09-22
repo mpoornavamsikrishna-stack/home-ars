@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Astro's static output already generates clean URLs (e.g. /privacy-policy/),
+# so no custom redirect rules are needed for routing. Add a [[redirects]]
+# block here later only if you introduce URL changes that need forwarding.

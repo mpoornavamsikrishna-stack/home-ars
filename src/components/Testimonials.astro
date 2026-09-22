@@ -1,0 +1,75 @@
+---
+import TestimonialCard from "./TestimonialCard.astro";
+import { testimonials } from "../data/testimonials";
+---
+
+<section class="testimonials" id="reviews" aria-labelledby="testimonials-heading">
+  <div class="container">
+    <div class="testimonials-intro">
+      <h2 id="testimonials-heading">What Our Customers Say</h2>
+      <p class="testimonials-lede">
+        Reviews below are placeholders and will be replaced with verified customer feedback as it's
+        collected.
+      </p>
+    </div>
+
+    <div class="testimonials-grid">
+      {
+        testimonials.map((t) => (
+          <TestimonialCard
+            verified={t.verified}
+            customerName={t.customerName}
+            applianceServiced={t.applianceServiced}
+            review={t.review}
+            rating={t.rating}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    background: var(--bg-light);
+    border-top: 1px solid var(--line-200);
+    padding: var(--sp-8) 0;
+  }
+
+  .testimonials-intro {
+    max-width: 60ch;
+    margin: 0 auto var(--sp-6);
+  }
+
+  .testimonials-intro h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+    margin-bottom: var(--sp-3);
+  }
+
+  .testimonials-lede {
+    font-size: 14px;
+    color: var(--charcoal-600);
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-5);
+  }
+
+  @media (min-width: 640px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .testimonials-intro h2 {
+      font-size: 34px;
+    }
+  }
+</style>

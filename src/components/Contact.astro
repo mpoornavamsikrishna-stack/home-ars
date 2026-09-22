@@ -1,0 +1,101 @@
+---
+import { business, telHref, whatsappHref } from "../data/business";
+
+const details = [
+  { label: "Business", value: business.name },
+  { label: "Phone", value: business.phoneDisplay },
+  { label: "WhatsApp", value: business.whatsappNumber },
+  { label: "Email", value: business.email },
+  { label: "Address", value: business.address },
+  { label: "City", value: business.city },
+  { label: "Working Hours", value: business.hours },
+];
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+  <div class="container contact-inner">
+    <h2 id="contact-heading">Contact SVPHome ARS</h2>
+
+    <dl class="contact-details">
+      {
+        details.map((item) => (
+          <div class="contact-row">
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="contact-buttons">
+      <a href={telHref()} class="btn btn-outline-navy">Call Now</a>
+      <a href={whatsappHref()} class="btn btn-ghost-blue" target="_blank" rel="noopener">WhatsApp Us</a>
+      <a href="/#booking" class="btn btn-cta">Book a Service</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  .contact-inner {
+    max-width: 640px;
+  }
+
+  .contact-inner h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+    margin-bottom: var(--sp-6);
+  }
+
+  .contact-details {
+    margin: 0 0 var(--sp-6);
+    border: 1px solid var(--line-200);
+    border-radius: var(--radius-lg);
+    background: var(--bg-light);
+    overflow: hidden;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-5);
+    border-bottom: 1px solid var(--line-200);
+  }
+
+  .contact-row:last-child {
+    border-bottom: none;
+  }
+
+  .contact-row dt {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal-600);
+    flex-shrink: 0;
+  }
+
+  .contact-row dd {
+    margin: 0;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--navy-900);
+    text-align: right;
+  }
+
+  .contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  @media (min-width: 900px) {
+    .contact-inner h2 {
+      font-size: 34px;
+    }
+  }
+</style>

@@ -1,0 +1,140 @@
+---
+import { serviceAreas } from "../data/serviceAreas";
+import { business, telHref, whatsappHref } from "../data/business";
+---
+
+<section class="service-areas" id="service-areas" aria-labelledby="service-areas-heading">
+  <div class="container service-areas-grid">
+    <div class="service-areas-content">
+      <h2 id="service-areas-heading">Appliance Repair Service in {business.city}</h2>
+      <p class="service-areas-lede">
+        SVPHome ARS provides appliance repair and service support in {business.city} and selected
+        surrounding areas. <a href="/#contact">Contact us</a> to confirm service availability in
+        your location.
+      </p>
+
+      <div class="service-areas-cta">
+        <a href={telHref()} class="btn btn-outline-navy btn-sm">Call to check coverage</a>
+        <a href={whatsappHref()} class="btn btn-ghost-blue btn-sm" target="_blank" rel="noopener">
+          Ask on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="service-areas-side">
+      <h3 class="service-areas-list-heading">Areas we currently serve</h3>
+      <ul class="service-areas-list">
+        {
+          serviceAreas.map((area) => (
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linejoin="round"
+                />
+                <circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.6" />
+              </svg>
+              {area.name}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-areas {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  .service-areas-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+  }
+
+  .service-areas-content h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+    margin-bottom: var(--sp-4);
+    max-width: 22ch;
+  }
+
+  .service-areas-lede {
+    font-size: 15.5px;
+    color: var(--charcoal-600);
+    max-width: 58ch;
+    margin-bottom: var(--sp-5);
+  }
+
+  .service-areas-lede a {
+    color: var(--blue-600);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .service-areas-lede a:hover {
+    color: var(--navy-900);
+  }
+
+  .service-areas-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .service-areas-list-heading {
+    font-size: 15px;
+    margin-bottom: var(--sp-3);
+  }
+
+  .service-areas-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    border: 1px solid var(--line-200);
+    border-radius: var(--radius-lg);
+    background: var(--bg-light);
+    padding: var(--sp-4);
+  }
+
+  .service-areas-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: 14.5px;
+    color: var(--navy-900);
+    font-weight: 600;
+    padding: var(--sp-2) var(--sp-2);
+    background: var(--bg-white);
+    border: 1px solid var(--line-200);
+    border-radius: var(--radius-sm);
+  }
+
+  .service-areas-list li svg {
+    width: 16px;
+    height: 16px;
+    color: var(--blue-600);
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 900px) {
+    .service-areas-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: var(--sp-8);
+      align-items: start;
+    }
+
+    .service-areas-content h2 {
+      font-size: 34px;
+    }
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+import { business } from "../data/business";
+---
+
+<section class="about" id="about" aria-labelledby="about-heading">
+  <div class="container about-grid">
+    <div class="about-content">
+      <h2 id="about-heading">Your Local Appliance Repair Partner</h2>
+
+      <p class="about-lede">
+        SVPHome ARS helps customers keep their essential household appliances working with convenient
+        repair and service support.
+      </p>
+
+      <p>
+        Based in {business.city}, we provide repair, servicing, troubleshooting, and maintenance for
+        washing machines, refrigerators, air conditioners, microwaves, TVs, and other household
+        appliances — all at your doorstep, so you don't have to work around anyone else's schedule
+        but your own.
+      </p>
+
+      <ul class="about-focus">
+        <li>
+          <strong>Professional service</strong> — troubleshooting focused on finding the actual cause
+          of the problem, not just treating the symptom.
+        </li>
+        <li>
+          <strong>Customer convenience</strong> — appointments that fit your day, with the work done
+          at your home.
+        </li>
+        <li>
+          <strong>Clear communication</strong> — you know what's wrong and what's involved in the
+          repair before any work begins.
+        </li>
+        <li>
+          <strong>Reliable support</strong> — reachable by phone or WhatsApp whenever an appliance
+          needs attention.
+        </li>
+      </ul>
+
+      <p>
+        Curious what a visit looks like? See <a href="/#how-it-works">how SVPHome ARS appliance repair
+        works</a>, or <a href="/#services">browse our services</a> to find your appliance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  /* Single centered column now that the photo/credentials side column has
+     been removed — a comfortable reading width, not a bare full-bleed block. */
+  .about-grid {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .about-content h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+    margin-bottom: var(--sp-4);
+  }
+
+  .about-content p {
+    font-size: 15.5px;
+    color: var(--charcoal-600);
+    margin-bottom: var(--sp-4);
+    max-width: 62ch;
+  }
+
+  .about-lede {
+    font-size: 17px;
+    color: var(--navy-900);
+    font-weight: 600;
+  }
+
+  .about-content a {
+    color: var(--blue-600);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-content a:hover {
+    color: var(--navy-900);
+  }
+
+  .about-focus {
+    list-style: none;
+    margin: 0 0 var(--sp-5);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  .about-focus li {
+    font-size: 14.5px;
+    color: var(--charcoal-600);
+    padding-left: var(--sp-4);
+    position: relative;
+  }
+
+  .about-focus li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange-500);
+  }
+
+  .about-focus strong {
+    color: var(--navy-900);
+  }
+
+  @media (min-width: 900px) {
+    .about-content h2 {
+      font-size: 34px;
+    }
+  }
+</style>

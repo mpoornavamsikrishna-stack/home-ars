@@ -1,0 +1,210 @@
+---
+import { business, telHref, whatsappHref } from "../data/business";
+import ApplianceSlider from "./ApplianceSlider.astro";
+---
+
+<section class="hero" id="home">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <span class="hero-badge">
+        <span class="dot" aria-hidden="true"></span>
+        Serving homes in {business.city}
+      </span>
+
+      <h1>Reliable Appliance Repair &amp; Service at Your Doorstep</h1>
+
+      <p class="lede">
+        Professional repair and maintenance for washing machines, refrigerators, air
+        conditioners, microwaves, TVs, and other household appliances.
+      </p>
+
+      <div class="hero-ctas">
+        <div class="hero-ctas-row">
+          <a href="/#booking" class="btn btn-cta hero-cta-btn">Book a Service</a>
+          <a href={telHref()} class="btn btn-outline hero-cta-btn">Call Now</a>
+          <a href={whatsappHref()} class="btn btn-ghost-blue hero-cta-btn" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path
+                d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.4 0-.5-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.2-.2-.5-.3z"
+                fill="currentColor"></path>
+              <path
+                d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.9 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"
+                stroke="currentColor"
+                stroke-width="1.6"></path>
+            </svg>
+            <span>WhatsApp Us</span>
+          </a>
+        </div>
+      </div>
+
+      <p class="hero-note">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"></circle>
+        </svg>
+        Straightforward pricing, shared with you before any work begins.
+      </p>
+    </div>
+
+    <div class="hero-visual">
+      <ApplianceSlider />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-700) 100%);
+    padding: var(--sp-7) 0 var(--sp-8);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-bottom: var(--sp-4);
+  }
+
+  .hero-badge .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--orange-500);
+    flex-shrink: 0;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-content p.lede {
+    margin-top: var(--sp-4);
+    font-size: 16.5px;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 52ch;
+  }
+
+  .hero-ctas {
+    margin-top: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    align-items: flex-start;
+  }
+
+  /* All three CTAs stay in a single row on every device — buttons shrink
+     rather than wrap, with a text-ellipsis safety net at extreme widths. */
+  .hero-ctas-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: var(--sp-2);
+    width: 100%;
+  }
+
+  .hero-cta-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 10.5px;
+    padding: 10px 6px;
+    gap: 4px;
+  }
+
+  .hero-cta-btn svg {
+    display: none;
+  }
+
+  .hero-note {
+    margin-top: var(--sp-5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .hero-note svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--orange-500);
+  }
+
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 400px) {
+    .hero-cta-btn {
+      font-size: 12.5px;
+      padding: 11px 10px;
+    }
+  }
+
+  @media (min-width: 480px) {
+    .hero-cta-btn {
+      font-size: 14px;
+      padding: 13px 14px;
+    }
+    .hero-cta-btn svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .hero-ctas-row {
+      gap: var(--sp-3);
+    }
+    .hero-cta-btn {
+      flex: none;
+      font-size: 16px;
+      padding: 15px 24px;
+    }
+    .hero-cta-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  @media (min-width: 860px) {
+    .hero-inner {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: var(--sp-8);
+    }
+    .hero-content h1 {
+      font-size: 44px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .hero-content h1 {
+      font-size: 50px;
+    }
+  }
+</style>

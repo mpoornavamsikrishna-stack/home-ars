@@ -1,0 +1,232 @@
+---
+import { Image } from "astro:assets";
+import ApplianceIcon from "./ApplianceIcon.astro";
+import type { ApplianceIconName } from "../data/services";
+
+interface Props {
+  icon: ApplianceIconName;
+  name: string;
+  photo?: string;
+  description: string;
+  variants?: string[];
+  problems: string[];
+  ctaLabel: string;
+  ctaHref: string;
+  ctaExternal?: boolean;
+}
+
+const { icon, name, photo, description, variants, problems, ctaLabel, ctaHref, ctaExternal = false } =
+  Astro.props;
+
+// Resolve every file in src/assets/services/ at build time so Astro can
+// optimize each one, the same pattern used for the hero's appliance slider.
+const servicePhotos = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/services/*.{jpg,jpeg,png}",
+  { eager: true }
+);
+
+const resolvedPhoto = photo ? servicePhotos[`/src/assets/services/${photo}`]?.default : undefined;
+---
+
+<article class="service-card">
+  {
+    resolvedPhoto && (
+      <div class="service-photo">
+        <Image src={resolvedPhoto} alt="" width={400} height={260} loading="lazy" />
+      </div>
+    )
+  }
+
+  <div class="service-card-body">
+    <span class="service-icon" aria-hidden="true">
+      <ApplianceIcon name={icon} />
+    </span>
+
+    <h3 class="service-name">{name}</h3>
+
+  {
+    variants && variants.length > 0 ? (
+      <div class="service-variants">
+        <p class="service-variants-label">Types we service:</p>
+        <ul class="service-variants-list">
+          {variants.map((v) => (
+            <li>{v}</li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      <p class="service-description">{description}</p>
+    )
+  }
+
+  {
+    problems.length > 0 && (
+      <div class="service-problems">
+        <p class="service-problems-label">Common issues we fix:</p>
+        <ul class="service-problems-list">
+          {problems.map((problem) => (
+            <li>{problem}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <a
+    href={ctaHref}
+    class="btn btn-cta btn-block service-cta"
+    target={ctaExternal ? "_blank" : undefined}
+    rel={ctaExternal ? "noopener" : undefined}
+  >
+    {ctaLabel}
+  </a>
+  </div>
+</article>
+
+<style>
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-white);
+    border: 1px solid var(--line-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    height: 100%;
+  }
+
+  .service-photo {
+    aspect-ratio: 4 / 3;
+    background: var(--bg-light);
+  }
+
+  .service-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .service-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--sp-5);
+  }
+
+  .service-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--blue-600);
+    transform: translateY(-2px);
+  }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--blue-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: var(--sp-4);
+  }
+
+  .service-icon svg {
+    width: 26px;
+    height: 26px;
+    color: var(--blue-600);
+  }
+
+  .service-name {
+    font-size: 19px;
+    margin-bottom: var(--sp-2);
+  }
+
+  .service-description {
+    font-size: 14.5px;
+    color: var(--charcoal-600);
+    margin-bottom: var(--sp-4);
+  }
+
+  .service-variants {
+    margin-bottom: var(--sp-4);
+  }
+
+  .service-variants-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-900);
+    margin-bottom: var(--sp-2);
+  }
+
+  .service-variants-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .service-variants-list li {
+    font-size: 13.5px;
+    color: var(--charcoal-600);
+    padding-left: var(--sp-4);
+    position: relative;
+  }
+
+  .service-variants-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue-600);
+  }
+
+  .service-problems {
+    margin-bottom: var(--sp-5);
+  }
+
+  .service-problems-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-900);
+    margin-bottom: var(--sp-2);
+  }
+
+  .service-problems-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .service-problems-list li {
+    font-size: 12.5px;
+    color: var(--charcoal-600);
+    background: var(--bg-light);
+    border: 1px solid var(--line-200);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+
+  .service-cta {
+    margin-top: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card {
+      transition: none;
+    }
+    .service-card:hover {
+      transform: none;
+    }
+  }
+</style>

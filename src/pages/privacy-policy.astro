@@ -1,0 +1,33 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import LegalPage from "../components/LegalPage.astro";
+import { business } from "../data/business";
+import { privacyPolicy } from "../data/legal/privacyPolicy";
+---
+
+<MainLayout title={`Privacy Policy | ${business.name}`} description={`Privacy policy for ${business.name}.`} noindex>
+  <main>
+    <section class="legal-page">
+      <div class="container legal-inner">
+        <h1>Privacy Policy</h1>
+        <LegalPage content={privacyPolicy} slug="privacy" />
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .legal-page {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  .legal-inner {
+    max-width: 700px;
+  }
+
+  .legal-inner h1 {
+    font-size: 32px;
+    margin-bottom: var(--sp-6);
+  }
+</style>

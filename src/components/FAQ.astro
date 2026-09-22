@@ -1,0 +1,46 @@
+---
+import FAQItem from "./FAQItem.astro";
+import { faqItems } from "../data/faq";
+---
+
+<section class="faq" id="faq" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-intro">
+      <h2 id="faq-heading">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list">
+      {faqItems.map((item) => <FAQItem question={item.question} answer={item.answer} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  .faq-intro {
+    max-width: 60ch;
+    margin: 0 auto var(--sp-6);
+  }
+
+  .faq-intro h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    max-width: 780px;
+  }
+
+  @media (min-width: 900px) {
+    .faq-intro h2 {
+      font-size: 34px;
+    }
+  }
+</style>

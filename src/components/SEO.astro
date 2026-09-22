@@ -1,0 +1,83 @@
+---
+import { business, isPlaceholder } from "../data/business";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Overrides the auto-derived canonical URL (rarely needed). */
+  canonicalURL?: string | URL;
+  /** Absolute URL to a social share image. Omitted from OG/Twitter tags if not provided. */
+  image?: string;
+  /** Set true on pages that shouldn't be indexed (e.g. a future thank-you page). */
+  noindex?: boolean;
+}
+
+const { title, description, canonicalURL, image, noindex = false } = Astro.props;
+
+const resolvedCanonical = canonicalURL ?? new URL(Astro.url.pathname, Astro.site);
+const resolvedImage = image ? new URL(image, Astro.site).toString() : undefined;
+
+// Build LocalBusiness structured data using ONLY fields that have actually
+// been filled in. Anything still a "[PLACEHOLDER]" in business.ts is left
+// out entirely — no invented address, phone, hours, ratings, reviews, price
+// range, or coordinates.
+type LocalBusinessSchema = Record<string, unknown>;
+
+const schema: LocalBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: business.name,
+  url: Astro.site ? Astro.site.toString() : undefined,
+  logo: Astro.site ? new URL("/logo-mark.png", Astro.site).toString() : undefined,
+};
+
+if (!isPlaceholder(business.phoneDisplay)) {
+  schema.telephone = business.phoneDisplay;
+}
+
+if (!isPlaceholder(business.email)) {
+  schema.email = business.email;
+}
+
+if (!isPlaceholder(business.address) || !isPlaceholder(business.city)) {
+  const address: LocalBusinessSchema = { "@type": "PostalAddress" };
+  if (!isPlaceholder(business.address)) address.streetAddress = business.address;
+  if (!isPlaceholder(business.city)) address.addressLocality = business.city;
+  schema.address = address;
+}
+
+if (!isPlaceholder(business.city)) {
+  schema.areaServed = business.city;
+}
+
+if (!isPlaceholder(business.hours)) {
+  schema.openingHours = business.hours;
+}
+
+// Deliberately never set: aggregateRating, review, priceRange, geo —
+// none of these have been supplied, so none are invented here.
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={resolvedCanonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content={business.name} />
+<meta property="og:url" content={resolvedCanonical} />
+{resolvedImage && <meta property="og:image" content={resolvedImage} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content={resolvedImage ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{resolvedImage && <meta name="twitter:image" content={resolvedImage} />}
+
+<!-- Local business hint for search engines -->
+{!isPlaceholder(business.city) && <meta name="geo.placename" content={business.city} />}
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />

@@ -1,0 +1,328 @@
+---
+import { Image } from "astro:assets";
+import { applianceSlides } from "../data/appliances";
+
+// Resolve every file in src/assets/appliances/ at build time so Astro can
+// optimize each one (correct format, real dimensions, responsive output)
+// through the Image component below, instead of serving raw <img> tags.
+const applianceImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/appliances/*.{jpg,jpeg,png}",
+  { eager: true }
+);
+
+function resolveImage(filename: string): ImageMetadata {
+  const mod = applianceImages[`/src/assets/appliances/${filename}`];
+  if (!mod) {
+    throw new Error(
+      `ApplianceSlider: no image found at src/assets/appliances/${filename} — check src/data/appliances.ts`
+    );
+  }
+  return mod.default;
+}
+---
+
+<div class="appliance-slider">
+  <div class="slider-container" id="applianceSliderContainer">
+    <button class="app-nav app-prev" type="button" aria-label="Previous appliance photo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+    <button class="app-nav app-next" type="button" aria-label="Next appliance photo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+
+    <div class="app-track" id="appTrack">
+      {
+        applianceSlides.map((item, i) => (
+          <div class={`app-slide ${i === 0 ? "active" : ""}`} data-index={i}>
+            <Image
+              src={resolveImage(item.image)}
+              alt={item.label}
+              width={500}
+              height={300}
+              loading={i === 0 ? "eager" : "lazy"}
+              fetchpriority={i === 0 ? "high" : "auto"}
+            />
+            <div class="app-label">{item.label}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="app-dots" id="appDots" role="tablist" aria-label="Choose appliance photo">
+      {
+        applianceSlides.map((item, i) => (
+          <button
+            type="button"
+            class={`app-dot ${i === 0 ? "active" : ""}`}
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+            aria-label={`Show ${item.label}`}
+            data-index={i}
+          />
+        ))
+      }
+    </div>
+
+    <div class="app-progress" id="appProgress"></div>
+  </div>
+</div>
+
+<style>
+  .appliance-slider {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--navy-900);
+    box-shadow: var(--shadow-md);
+  }
+
+  .app-track {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 3;
+  }
+
+  .app-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .app-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+  }
+
+  .app-slide.exit {
+    transform: translateX(-100%);
+    z-index: 1;
+  }
+
+  .app-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .app-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--sp-3) var(--sp-4);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+    z-index: 3;
+  }
+
+  .app-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(11, 35, 64, 0.55);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease;
+  }
+
+  .app-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .app-nav:hover {
+    background: var(--blue-600);
+  }
+
+  .app-prev {
+    left: 10px;
+  }
+
+  .app-next {
+    right: 10px;
+  }
+
+  .app-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    padding: var(--sp-3) 0;
+    background: var(--navy-900);
+  }
+
+  .app-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .app-dot:hover {
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  .app-dot.active {
+    background: var(--blue-600);
+    width: 22px;
+    border-radius: 4px;
+  }
+
+  .app-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--orange-500);
+    z-index: 10;
+    transition: width 3s linear;
+  }
+
+  .app-progress.running {
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-slide {
+      transition: none;
+    }
+    .app-progress {
+      transition: none;
+    }
+    .app-nav,
+    .app-dot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Auto-advancing slider with keyboard-accessible prev/next/dot controls.
+  // Respects prefers-reduced-motion by disabling auto-advance and instant-
+  // switching slides instead of animating them.
+  (function () {
+    const container = document.getElementById("applianceSliderContainer");
+    if (!container) return;
+
+    const track = container.querySelector("#appTrack");
+    const slides = Array.from(container.querySelectorAll<HTMLElement>(".app-slide"));
+    const dots = Array.from(container.querySelectorAll<HTMLButtonElement>(".app-dot"));
+    const progress = container.querySelector<HTMLElement>("#appProgress");
+    const prevBtn = container.querySelector<HTMLButtonElement>(".app-prev");
+    const nextBtn = container.querySelector<HTMLButtonElement>(".app-next");
+
+    if (!track || !progress || slides.length === 0) return;
+
+    // TypeScript can't carry the null-check above into the nested functions
+    // below (a known closure-narrowing limitation), even though `progress`
+    // is a `const` that's already guaranteed non-null at this point. Binding
+    // it to a fresh const gives every nested function a properly-typed,
+    // non-null reference instead of `HTMLElement | null`.
+    const progressBar = progress;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const interval = 3000;
+    let current = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    function show(index: number) {
+      const previous = current;
+      slides.forEach((s) => s.classList.remove("active", "exit"));
+      dots.forEach((d) => {
+        d.classList.remove("active");
+        d.setAttribute("aria-selected", "false");
+      });
+
+      if (!prefersReducedMotion && slides[previous]) {
+        slides[previous].classList.add("exit");
+      }
+
+      current = index;
+      slides[current].classList.add("active");
+      dots[current].classList.add("active");
+      dots[current].setAttribute("aria-selected", "true");
+
+      progressBar.classList.remove("running");
+      void progressBar.offsetWidth;
+      progressBar.classList.add("running");
+
+      setTimeout(() => {
+        slides.forEach((s) => {
+          if (!s.classList.contains("active")) s.classList.remove("exit");
+        });
+      }, 600);
+    }
+
+    function goNext() {
+      show((current + 1) % slides.length);
+      resetTimer();
+    }
+
+    function goPrev() {
+      show((current - 1 + slides.length) % slides.length);
+      resetTimer();
+    }
+
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      if (prefersReducedMotion) return;
+      progressBar.classList.remove("running");
+      void progressBar.offsetWidth;
+      progressBar.classList.add("running");
+      timer = setInterval(() => show((current + 1) % slides.length), interval);
+    }
+
+    prevBtn?.addEventListener("click", goPrev);
+    nextBtn?.addEventListener("click", goNext);
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const idx = Number(dot.dataset.index);
+        show(idx);
+        resetTimer();
+      });
+    });
+
+    container.addEventListener("mouseenter", () => {
+      if (timer) clearInterval(timer);
+      progressBar.classList.remove("running");
+    });
+    container.addEventListener("mouseleave", resetTimer);
+
+    if (!prefersReducedMotion) {
+      progressBar.classList.add("running");
+      timer = setInterval(() => show((current + 1) % slides.length), interval);
+    }
+  })();
+</script>

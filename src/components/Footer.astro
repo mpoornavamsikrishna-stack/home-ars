@@ -1,0 +1,201 @@
+---
+import { Image } from "astro:assets";
+import { business, telHref, whatsappHref } from "../data/business";
+import logoMark from "../assets/brand/logo-mark.png";
+
+const year = new Date().getFullYear();
+
+const businessLinks = [
+  { label: "About SVPHome ARS", href: "/#about" },
+  { label: "Services", href: "/#services" },
+  { label: "Contact", href: "/#contact" },
+  { label: "Service Areas", href: "/#service-areas" },
+];
+
+// Short footer-friendly labels; all point back to the Services section since
+// there are no separate per-service pages yet.
+const serviceLinks = [
+  "Washing Machine Repair",
+  "Refrigerator Repair",
+  "AC Service",
+  "Microwave Repair",
+  "TV/Electronics Repair",
+  "Other Appliance Services",
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-lockup">
+        <span class="footer-brand-mark">
+          <Image src={logoMark} alt="" width={40} height={40} loading="lazy" />
+        </span>
+        <span class="footer-brand-name">{business.name}</span>
+      </div>
+      <p class="footer-blurb">
+        {business.name} provides appliance repair, servicing, troubleshooting, and maintenance for
+        household appliances in {business.city} and selected surrounding areas.
+      </p>
+    </div>
+
+    <nav class="footer-col" aria-labelledby="footer-business-heading">
+      <h3 id="footer-business-heading">Business</h3>
+      <ul>
+        {businessLinks.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="footer-col" aria-labelledby="footer-services-heading">
+      <h3 id="footer-services-heading">Services</h3>
+      <ul>
+        {serviceLinks.map((label) => <li><a href="/#services">{label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="footer-col" aria-labelledby="footer-contact-heading">
+      <h3 id="footer-contact-heading">Contact</h3>
+      <ul>
+        <li><a href={telHref()}>{business.phoneDisplay}</a></li>
+        <li><a href={whatsappHref()} target="_blank" rel="noopener">{business.whatsappNumber}</a></li>
+        <li><a href={`mailto:${business.email}`}>{business.email}</a></li>
+        <li>{business.address}</li>
+        <li>{business.hours}</li>
+      </ul>
+    </div>
+
+    <nav class="footer-col" aria-labelledby="footer-legal-heading">
+      <h3 id="footer-legal-heading">Legal</h3>
+      <ul>
+        <li><a href="/privacy-policy/">Privacy Policy</a></li>
+        <li><a href="/terms-conditions/">Terms &amp; Conditions</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© {year} {business.name}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy-900);
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+    padding: var(--sp-8) 0 var(--sp-7);
+  }
+
+  .footer-brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--sp-3);
+  }
+
+  .footer-brand-mark {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .footer-brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .footer-brand-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 18px;
+    color: #fff;
+  }
+
+  .footer-blurb {
+    font-size: 13.5px;
+    line-height: 1.6;
+    max-width: 34ch;
+  }
+
+  .footer-col h3 {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    margin-bottom: var(--sp-4);
+  }
+
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+
+  .footer-col li {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .footer-col a {
+    color: rgba(255, 255, 255, 0.75);
+    transition: color 0.12s ease;
+  }
+
+  .footer-col a:hover {
+    color: #fff;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-bottom .container {
+    padding-top: var(--sp-4);
+    padding-bottom: var(--sp-4);
+  }
+
+  .footer-bottom p {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 980px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr repeat(4, 1fr);
+    }
+    .footer-brand {
+      grid-column: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-col a {
+      transition: none;
+    }
+  }
+</style>

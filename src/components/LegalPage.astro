@@ -1,0 +1,197 @@
+---
+import type { LegalContent, LanguageCode } from "../data/legal/types";
+import { languageLabels } from "../data/legal/types";
+
+interface Props {
+  content: LegalContent;
+  /** Used to build stable per-language element ids (e.g. "privacy", "terms"). */
+  slug: string;
+}
+
+const { content, slug } = Astro.props;
+
+const languages = Object.keys(content) as LanguageCode[];
+
+const lastUpdated = new Date().toLocaleDateString("en-IN", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<div class="legal-doc" data-slug={slug}>
+  <div class="legal-review-note">
+    <strong>Before you publish this page:</strong> this is a starter document written in
+    simple language based on what this website actually collects and does — it doesn't
+    invent business facts, but it hasn't been reviewed by a lawyer. Please have it (and the
+    Telugu translation) reviewed before relying on it, and fill in any
+    <code>[bracketed placeholders]</code> with your real policy details.
+  </div>
+
+  {languages.length > 1 && (
+    <div class="legal-lang-switch" role="tablist" aria-label="Choose language">
+      {languages.map((lang, i) => (
+        <button
+          type="button"
+          class="legal-lang-btn"
+          role="tab"
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-controls={`${slug}-panel-${lang}`}
+          id={`${slug}-tab-${lang}`}
+          data-lang={lang}
+        >
+          {languageLabels[lang]}
+        </button>
+      ))}
+    </div>
+  )}
+
+  <p class="legal-updated">Last updated: {lastUpdated}</p>
+
+  {languages.map((lang, i) => {
+    const doc = content[lang];
+    return (
+      <div
+        class="legal-panel"
+        id={`${slug}-panel-${lang}`}
+        role="tabpanel"
+        aria-labelledby={`${slug}-tab-${lang}`}
+        hidden={i !== 0}
+        data-lang={lang}
+      >
+        <p class="legal-intro">{doc.intro}</p>
+        {doc.sections.map((section) => (
+          <section class="legal-section">
+            <h2>{section.heading}</h2>
+            {section.paragraphs.map((p) => (
+              <p>{p}</p>
+            ))}
+            {section.bullets && (
+              <ul>
+                {section.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .legal-review-note {
+    border: 1.5px dashed var(--line-200);
+    border-radius: var(--radius-lg);
+    background: var(--bg-light);
+    padding: var(--sp-5);
+    font-size: 13.5px;
+    color: var(--charcoal-600);
+    line-height: 1.6;
+    margin-bottom: var(--sp-6);
+  }
+
+  .legal-review-note strong {
+    color: var(--navy-900);
+  }
+
+  .legal-review-note code {
+    background: var(--bg-white);
+    border: 1px solid var(--line-200);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.95em;
+  }
+
+  .legal-lang-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-4);
+  }
+
+  .legal-lang-btn {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--navy-900);
+    background: var(--bg-white);
+    border: 1.5px solid var(--line-200);
+    border-radius: 999px;
+    padding: 8px 16px;
+    min-height: 40px;
+  }
+
+  .legal-lang-btn[aria-selected="true"] {
+    background: var(--navy-900);
+    color: #fff;
+    border-color: var(--navy-900);
+  }
+
+  .legal-updated {
+    font-size: 13px;
+    color: var(--charcoal-600);
+    margin-bottom: var(--sp-6);
+  }
+
+  .legal-intro {
+    font-size: 15px;
+    color: var(--charcoal-900);
+    margin-bottom: var(--sp-6);
+  }
+
+  .legal-section {
+    margin-bottom: var(--sp-6);
+  }
+
+  .legal-section h2 {
+    font-size: 18px;
+    margin-bottom: var(--sp-3);
+  }
+
+  .legal-section p {
+    font-size: 14.5px;
+    color: var(--charcoal-600);
+    line-height: 1.65;
+    margin-bottom: var(--sp-3);
+  }
+
+  .legal-section ul {
+    margin: 0 0 var(--sp-3);
+    padding-left: 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .legal-section li {
+    font-size: 14.5px;
+    color: var(--charcoal-600);
+    line-height: 1.6;
+  }
+
+  /* Telugu text tends to need a touch more line-height for comfortable reading */
+  .legal-panel[data-lang="te"] {
+    line-height: 1.8;
+  }
+</style>
+
+<script>
+  // Minimal, dependency-free tab switching — no framework needed for two panels.
+  document.querySelectorAll(".legal-doc").forEach((doc) => {
+    const buttons = doc.querySelectorAll<HTMLButtonElement>(".legal-lang-btn");
+    const panels = doc.querySelectorAll<HTMLElement>(".legal-panel");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lang = btn.dataset.lang;
+
+        buttons.forEach((b) => b.setAttribute("aria-selected", b === btn ? "true" : "false"));
+        panels.forEach((p) => {
+          p.hidden = p.dataset.lang !== lang;
+        });
+      });
+    });
+  });
+</script>

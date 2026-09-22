@@ -1,0 +1,69 @@
+---
+import { business } from "../data/business";
+
+// Repeated several times so the marquee always has content on screen at any
+// scroll position, regardless of viewport width.
+const repeatCount = 8;
+---
+
+<div class="price-ticker" role="note" aria-label={business.serviceChargeNotice}>
+  <div class="ticker-track">
+    {
+      Array.from({ length: repeatCount }).map((_, i) => (
+        <span class="ticker-item" aria-hidden={i > 0 ? "true" : undefined}>
+          {business.serviceChargeNotice}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .price-ticker {
+    background: var(--orange-500);
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: ticker-scroll 18s linear infinite;
+  }
+
+  .ticker-item {
+    flex-shrink: 0;
+    padding: 7px var(--sp-6);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: #fff;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  @keyframes ticker-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+      justify-content: center;
+      width: 100%;
+    }
+    .ticker-item:not(:first-child) {
+      display: none;
+    }
+    .ticker-item {
+      border-right: none;
+    }
+  }
+</style>

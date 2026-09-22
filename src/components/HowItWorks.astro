@@ -1,0 +1,72 @@
+---
+import ProcessStep from "./ProcessStep.astro";
+import { processSteps } from "../data/benefits";
+---
+
+<section class="how-it-works" id="how-it-works" aria-labelledby="how-it-works-heading">
+  <div class="container">
+    <div class="how-it-works-intro">
+      <h2 id="how-it-works-heading">How SVPHome ARS Appliance Repair Works</h2>
+    </div>
+
+    <ol class="process-steps">
+      {
+        processSteps.map((step) => (
+          <ProcessStep number={step.number} title={step.title} description={step.description} />
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how-it-works {
+    background: var(--bg-light);
+    border-top: 1px solid var(--line-200);
+    padding: var(--sp-8) 0;
+  }
+
+  .how-it-works-intro {
+    max-width: 60ch;
+    margin: 0 auto var(--sp-7);
+  }
+
+  .how-it-works-intro h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+  }
+
+  .process-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-4);
+  }
+
+  @media (min-width: 900px) {
+    .how-it-works-intro h2 {
+      font-size: 34px;
+    }
+
+    .process-steps {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    /* Connecting line drawn behind the step nodes; centers align with the
+       44px node height (22px from the top of each list item). */
+    .process-steps::before {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: var(--line-200);
+      z-index: 0;
+    }
+  }
+</style>

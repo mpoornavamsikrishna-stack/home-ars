@@ -1,0 +1,36 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Hero from "../components/Hero.astro";
+import TrustIndicators from "../components/TrustIndicators.astro";
+import ServiceSection from "../components/ServiceSection.astro";
+import Benefits from "../components/Benefits.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import About from "../components/About.astro";
+import BrandGrid from "../components/BrandGrid.astro";
+import ServiceAreas from "../components/ServiceAreas.astro";
+import FAQ from "../components/FAQ.astro";
+import CTA from "../components/CTA.astro";
+import BookingForm from "../components/BookingForm.astro";
+import Contact from "../components/Contact.astro";
+import { business } from "../data/business";
+---
+
+<MainLayout
+  title={`Appliance Repair & Service in ${business.city} | ${business.name}`}
+  description={`Professional washing machine, refrigerator, AC, microwave and household appliance repair services in ${business.city}. Contact ${business.name} to book a service.`}
+>
+  <main>
+    <Hero />
+    <TrustIndicators />
+    <ServiceSection />
+    <Benefits />
+    <HowItWorks />
+    <About />
+    <BrandGrid />
+    <ServiceAreas />
+    <FAQ />
+    <CTA />
+    <BookingForm />
+    <Contact />
+  </main>
+</MainLayout>

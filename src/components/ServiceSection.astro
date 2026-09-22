@@ -1,0 +1,79 @@
+---
+import ServiceCard from "./ServiceCard.astro";
+import { services } from "../data/services";
+import { whatsappHref } from "../data/business";
+---
+
+<section class="services" id="services" aria-labelledby="services-heading">
+  <div class="container">
+    <div class="services-intro">
+      <h2 id="services-heading">Expert Appliance Repair &amp; Service</h2>
+      <p class="services-lede">
+        Professional troubleshooting, repair, and maintenance for common household appliances.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      {
+        services.map((service) => (
+          <ServiceCard
+            icon={service.icon}
+            name={service.name}
+            photo={service.photo}
+            description={service.description}
+            variants={service.variants}
+            problems={service.problems}
+            ctaLabel={service.ctaLabel}
+            ctaHref={service.ctaType === "whatsapp" ? whatsappHref(service.whatsappMessage) : "/#booking"}
+            ctaExternal={service.ctaType === "whatsapp"}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: var(--bg-light);
+    padding: var(--sp-8) 0;
+  }
+
+  .services-intro {
+    max-width: 60ch;
+    margin: 0 auto var(--sp-7);
+    text-align: left;
+  }
+
+  .services-intro h2 {
+    font-size: 28px;
+    letter-spacing: -0.3px;
+  }
+
+  .services-lede {
+    margin-top: var(--sp-3);
+    font-size: 15.5px;
+    color: var(--charcoal-600);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-5);
+  }
+
+  @media (min-width: 640px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .services-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .services-intro h2 {
+      font-size: 34px;
+    }
+  }
+</style>

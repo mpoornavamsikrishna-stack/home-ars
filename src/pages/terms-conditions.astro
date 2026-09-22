@@ -1,0 +1,33 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import LegalPage from "../components/LegalPage.astro";
+import { business } from "../data/business";
+import { termsConditions } from "../data/legal/termsConditions";
+---
+
+<MainLayout title={`Terms & Conditions | ${business.name}`} description={`Terms and conditions for ${business.name}.`} noindex>
+  <main>
+    <section class="legal-page">
+      <div class="container legal-inner">
+        <h1>Terms &amp; Conditions</h1>
+        <LegalPage content={termsConditions} slug="terms" />
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .legal-page {
+    background: var(--bg-white);
+    padding: var(--sp-8) 0;
+  }
+
+  .legal-inner {
+    max-width: 700px;
+  }
+
+  .legal-inner h1 {
+    font-size: 32px;
+    margin-bottom: var(--sp-6);
+  }
+</style>
